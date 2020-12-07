@@ -24,7 +24,5 @@ if __name__ == '__main__':
     if Path(args.dataset).is_file() and Path(args.dataset).suffix == '.csv':
         dataset = pd.read_csv(Path(args.dataset), header=0, names=args.columns,
                               usecols=args.features + args.label, encoding='utf-8')
-        for col in args.dropna:
-            dataset[col].dropna(inplace=True)
-        scaler = MinMaxScaler(copy=False)
-        dataset[args.normalize] = scaler.fit_transform(dataset[args.normalize])
+        dataset.dropna(subset=args.dropna, inplace=True)
+        dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
