@@ -15,8 +15,8 @@ import pickle
 
 def train_knn(df, neighbors, features, label, output):
     neigh = KNeighborsClassifier(n_neighbors=neighbors)
-    neigh = neigh.fit(df[features], df[label])
-    path= Path(output, "model_KNN.pkl")
+    neigh = neigh.fit(features, label)
+    path = Path(output, "model_KNN.pkl")
     with open(path, 'wb') as f:
         pickle.dump(neigh, f)
 
@@ -123,4 +123,4 @@ if __name__ == '__main__':
         elif any(_ in ['GPC', 'Gaussian', 'all'] for _ in args.models):
             train_gaussian_classifier(train_set, args.iterations, args.fatures, args.label, args.output)
         elif any(_ in ['NB', 'Bayes', 'NaiveBayes', 'all'] for _ in args.models):
-            train_naive_bayes(train_set, args.fatures, args.label, args.output)
+            train_gaussian_naive_bayes(train_set, args.fatures, args.label, args.output)
