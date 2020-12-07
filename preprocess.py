@@ -5,10 +5,6 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 
 
-def func():
-    pass
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Preprocess and split data into training and testing sets"
                                                  "This file handles all the feature engineering prior to training")
