@@ -5,7 +5,7 @@ from sklearn.metrics import *
 import pandas as pd
 
 
-def compute_measures(df, measures):
+def compute_measures(df, measures, features, label):
     if any(_ in ['F1', 'all'] for _ in measures):
         pass
     elif any(_ in ['precision', 'all'] for _ in measures):
@@ -44,6 +44,6 @@ if __name__ == '__main__':
             if Path.is_dir(m):
                 for model in Path(m).iterdir():
                     if model.is_file() and model.suffix in ['.model', '.pkl']:
-                        compute_measures(test_set, args.measures)
+                        compute_measures(test_set, args.measures, args.features, args.label)
             elif Path(m).suffix in ['.model', '.pkl']:
-                compute_measures(test_set, args.measures)
+                compute_measures(test_set, args.measures, args.features, args.label)

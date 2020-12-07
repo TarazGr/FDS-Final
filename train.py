@@ -13,35 +13,35 @@ import pandas as pd
 import pickle
 
 
-def train_knn(df, neighbors, output):
+def train_knn(df, neighbors, features, label, output):
     pass
 
 
-def train_neural_network(df, learning_rate, layers, iterations, tol, output):
+def train_neural_network(df, learning_rate, layers, iterations, tol, features, label, output):
     pass
 
 
-def train_decision_tree(df, output):
+def train_decision_tree(df, features, label, output):
     pass
 
 
-def train_random_forest(df, n_trees, depth, output):
+def train_random_forest(df, n_trees, depth, features, label, output):
     pass
 
 
-def train_svm(df, output):
+def train_svm(df, features, label, output):
     pass
 
 
-def train_logistic_regression(df, iterations, tol, output):
+def train_logistic_regression(df, iterations, tol, features, label, output):
     pass
 
 
-def train_gaussian_classifier(df, iterations, output):
+def train_gaussian_classifier(df, iterations, features, label, output):
     pass
 
 
-def train_naive_bayes(df, output):
+def train_naive_bayes(df, features, label, output):
     pass
 
 
@@ -76,19 +76,19 @@ if __name__ == '__main__':
         train_set = pd.read_csv(Path(args.train_set), header=0, names=args.columns, usecols=args.features + args.label,
                                 na_filter=False, encoding='utf-8')
         if any(_ in ['KNN', 'Neighbors', 'all'] for _ in args.models):
-            train_knn(train_set, args.neighbors, args.output)
+            train_knn(train_set, args.neighbors, args.fatures, args.label, args.output)
         elif any(_ in ['MLP', 'NeuralNetwork', 'all'] for _ in args.models):
             train_neural_network(train_set, args.learning_rate, args.layers, args.iterations, args.tolerance,
-                                 args.output)
+                                 args.fatures, args.label, args.output)
         elif any(_ in ['DT', 'DTree', 'DecisionTree', 'all'] for _ in args.models):
-            train_decision_tree(train_set, args.output)
+            train_decision_tree(train_set, args.fatures, args.label, args.output)
         elif any(_ in ['RF', 'RandomForest', 'Forest', 'all'] for _ in args.models):
-            train_random_forest(train_set, args.trees, args.depth, args.output)
+            train_random_forest(train_set, args.trees, args.depth, args.fatures, args.label, args.output)
         elif any(_ in ['SVM', 'all'] for _ in args.models):
-            train_svm(train_set, args.output)
+            train_svm(train_set, args.fatures, args.label, args.output)
         elif any(_ in ['LR', 'Logistic', 'LogisticRegression', 'all'] for _ in args.models):
-            train_logistic_regression(train_set, args.iterations, args.tolerance, args.output)
+            train_logistic_regression(train_set, args.iterations, args.tolerance, args.fatures, args.label, args.output)
         elif any(_ in ['GPC', 'Gaussian', 'all'] for _ in args.models):
-            train_gaussian_classifier(train_set, args.iterations, args.output)
+            train_gaussian_classifier(train_set, args.iterations, args.fatures, args.label, args.output)
         elif any(_ in ['NB', 'Bayes', 'NaiveBayes', 'all'] for _ in args.models):
-            train_naive_bayes(train_set, args.output)
+            train_naive_bayes(train_set, args.fatures, args.label, args.output)
