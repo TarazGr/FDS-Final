@@ -42,7 +42,7 @@ if __name__ == '__main__':
         for m in args.models:
             if Path.is_dir(m):
                 for model in Path(m).iterdir():
-                    if model.is_file() and model.suffix in ['model', 'pkl']:
+                    if model.is_file() and model.suffix in ['.model', '.pkl']:
                         compute_measures(test_set, args.measures)
-            elif Path(m).suffix in ['model', 'pkl']:
+            elif Path(m).suffix in ['.model', '.pkl']:
                 compute_measures(test_set, args.measures)
