@@ -20,9 +20,16 @@ if __name__ == '__main__':
     parser.add_argument('-dn', '--dropna', nargs='*',
                         help="column names which if a row's value is NaN, it should be dropped")
     parser.add_argument('-n', '--normalize', nargs='*', help='labels whose values should be normalized in (0, 1)')
+    parser.add_argument('-s', '--substitute', nargs='*',
+                        help='labels whose NaN values should be substituted with the values specified in --subvalue\n'
+                             'values specified here should correspond respectively to the ones in --subvalue')
+    parser.add_argument('-sv', '--subvalues', nargs='*',
+                        help='values to be used for substitution of NaN for columns specified in --substitute\n'
+                             'values specified here should correspond respectively to the ones in --substitute')
     args = parser.parse_args()
     if Path(args.dataset).is_file() and Path(args.dataset).suffix == '.csv':
         dataset = pd.read_csv(Path(args.dataset), header=0, names=args.columns,
                               usecols=args.features + args.label, encoding='utf-8')
         dataset.dropna(subset=args.dropna, inplace=True)
+        dataset.fillna(dict(zip(args.substitute, args.subvalues)))
         dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])

@@ -27,7 +27,7 @@ def compute_measures(df, measures, features, label):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Test the provided model(s) with the testing set in input')
     parser.add_argument('test-set', help='The path to the testing set csv file to conduct tests on')
-    parser.add_argument('models', nargs='+', help='Path(s) to the models to test; '
+    parser.add_argument('models', nargs='+', help='Path(s) to the models to test;\n'
                                                   'if a folder is provided, all models in the folder will be tested')
     parser.add_argument('measures', nargs='*',
                         choices=['F1', 'precision', 'recall', 'accuracy', 'confusion', 'roc', 'matrix',
