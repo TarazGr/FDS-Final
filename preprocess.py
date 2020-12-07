@@ -18,8 +18,8 @@ if __name__ == '__main__':
                         help="column names which if a row's value is NaN, it should be dropped")
     parser.add_argument('-n', '--normalize', nargs='*', help='labels whose values should be normalized in (0, 1)')
     parser.add_argument('-s', '--substitute', nargs='*',
-                        help='labels whose NaN values should be substituted with the values specified in --subvalue\n'
-                             'values specified here should correspond respectively to the ones in --subvalue')
+                        help='labels whose NaN values should be substituted with the values specified in --subvalues\n'
+                             'values specified here should correspond respectively to the ones in --subvalues')
     parser.add_argument('-sv', '--subvalues', nargs='*',
                         help='values to be used for substitution of NaN for columns specified in --substitute\n'
                              'values specified here should correspond respectively to the ones in --substitute')
