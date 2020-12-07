@@ -8,41 +8,73 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.naive_bayes import BaseNB
+from sklearn.naive_bayes import GaussianNB
 import pandas as pd
 import pickle
 
 
 def train_knn(df, neighbors, features, label, output):
-    pass
+    neigh = KNeighborsClassifier(n_neighbors=neighbors)
+    neigh = neigh.fit(features,label)
+    path= Path(output, "model_KNN.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(neigh, f)
 
 
 def train_neural_network(df, learning_rate, layers, iterations, tol, features, label, output):
-    pass
+    model =  MLPClassifier(hidden_layer_sizes = layers, learning_rate = learning_rate, max_iter = iterations, tol = tol)
+    model = model.fit(features,label)
+    path= Path(output, "model_neural_networks.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def train_decision_tree(df, features, label, output):
-    pass
+    model = DecisionTreeClassifier()
+    model = model.fit(features,label)
+    path = Path(output,"model_decision_tree.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def train_random_forest(df, n_trees, depth, features, label, output):
-    pass
+    model = RandomForestClassifier(n_estimators = n_trees, max_depth = depth )
+    model = model.fit(features,label)
+    path= Path(output, "model_random_forest.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def train_svm(df, features, label, output):
-    pass
+    model = SVC(kernel= "linear")
+    model = model.fit(features,label)
+    path = Path(output, "model_svm.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def train_logistic_regression(df, iterations, tol, features, label, output):
-    pass
+    model = linear_model.LogisticRegression(solver='liblinear',max_iter=iterations, tol=tol)
+    model = model.fit(features,label)
+    path = Path(output,"model_logistic_regression.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 def train_gaussian_classifier(df, iterations, features, label, output):
-    pass
+    model = GaussianProcessClassifier(max_iter_predict = iterations)
+    model = model.fit(features,label)
+    path = Path(output, "model_gaussian_classifier.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
-def train_naive_bayes(df, features, label, output):
-    pass
+def train_gaussian_naive_bayes(df, features, label, output):
+    model = GaussianNB()
+    model= model.fit(features,label)
+    path = Path(output, "model_gaussian_naive.pkl")
+    with open(path, 'wb') as f:
+        pickle.dump(model, f)
 
 
 if __name__ == '__main__':
