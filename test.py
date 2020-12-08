@@ -11,15 +11,15 @@ def compute_measures(path, df, measures, features, label):
     predictions = mod.predict(df[features])
     measures = [measures]
     if any(_ in ['F1', 'all'] for _ in measures):
-        print(metric.f1_score(df[label].values.ravel(), prdictions))
+        print(metric.f1_score(df[label].values.ravel(), predictions))
     if any(_ in ['precision', 'all'] for _ in measures):
         print(metric.precision_score(df[label].values.ravel(), predictions))
     if any(_ in ['recall', 'all'] for _ in measures):
         print(metric.recall_score(df[label].values.ravel(), predictions))
     if any(_ in ['accuracy', 'all'] for _ in measures):
-        print(metrics.accuracy_score(df[label].values, ravel(), predictions))
+        print(metric.accuracy_score(df[label].values.ravel(), predictions))
     if any(_ in ['confusion', 'matrix', 'confusionmatrix', 'all'] for _ in measures):
-        print(metrics.confusion_matrix(df[label].values.ravel(), predictions))
+        print(metric.confusion_matrix(df[label].values.ravel(), predictions))
     if any(_ in ['roc', 'all'] for _ in measures):
         print(metric.roc_auc_score(df[label].values.ravel(), predictions))
     if any(_ in ['report', 'all'] for _ in measures):
