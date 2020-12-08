@@ -23,7 +23,7 @@ def compute_measures(path, df, measures, features, label):
     if any(_ in ['roc', 'all'] for _ in measures):
         print(metric.roc_auc_score(df[label].values.ravel(), predictions))
     if any(_ in ['report', 'all'] for _ in measures):
-        print(metric.classification_report(df[label].values.ravel(), predictions))
+        print(path, '\n', metric.classification_report(df[label].values.ravel(), predictions))
     if any(_ in ['main', 'all'] for _ in measures):
         pass
 

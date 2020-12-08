@@ -23,6 +23,10 @@ if __name__ == '__main__':
     parser.add_argument('-sv', '--subvalues', nargs='*',
                         help='values to be used for substitution of NaN for columns specified in --substitute\n'
                              'values specified here should correspond respectively to the ones in --substitute')
+    parser.add_argument('-b', '--balance', type=bool, default=False,
+                        help='boolean representing whether to balance the dataset based on the label or not ')
+    parser.add_argument('-g', '--gaussian', type=bool, default=False,
+                        help='boolean representing whether to scale the dataset to a gaussian distribution or not')
     args = parser.parse_args()
     if Path(args.dataset).is_file() and Path(args.dataset).suffix == '.csv':
         dataset = pd.read_csv(Path(args.dataset), header=0, names=args.columns,
@@ -33,15 +37,14 @@ if __name__ == '__main__':
             dataset.fillna(dict(zip(args.substitute, args.subvalues)), inplace=True)
         if args.normalize:
             dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
-            print()
         shortest = min(len(dataset[dataset[args.label[0]] == 0]), len(dataset[dataset[args.label[0]] == 1]))
-
-        if len(dataset[dataset[args.label[0]] == 1]) == shortest:
-            keep = dataset.loc[dataset[dataset[args.label[0]] == 0].sample(shortest).index, :]
-            dataset = pd.concat([dataset[dataset[args.label[0]] == 1], keep], axis=0, copy=False)
-        else:
-            keep = dataset.loc[dataset[dataset[args.label[0]] == 1].sample(shortest).index, :]
-            dataset = pd.concat([dataset[dataset[args.label[0]] == 0], keep], axis=0, copy=False)
+        if args.balance:
+            if len(dataset[dataset[args.label[0]] == 1]) == shortest:
+                keep = dataset.loc[dataset[dataset[args.label[0]] == 0].sample(shortest).index, :]
+                dataset = pd.concat([dataset[dataset[args.label[0]] == 1], keep], axis=0, copy=False)
+            else:
+                keep = dataset.loc[dataset[dataset[args.label[0]] == 1].sample(shortest).index, :]
+                dataset = pd.concat([dataset[dataset[args.label[0]] == 0], keep], axis=0, copy=False)
         x_train, x_test, y_train, y_test = train_test_split(dataset[args.features], dataset[args.label], test_size=0.2)
         pd.concat([x_train, y_train], axis=1, copy=False).to_csv(Path(args.output, 'train_set.csv'),
                                                                  index=False, encoding='utf-8')
