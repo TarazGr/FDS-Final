@@ -9,7 +9,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Preprocess and split data into training and testing sets"
                                                  "This file handles all the feature engineering prior to training")
     parser.add_argument("dataset", help="The csv dataset to perform feature engineering on")
-    parser.add_argument('-o', '--output', default='datasets',
+    parser.add_argument('-o', '--output', default='../datasets',
                         help='folder path to save train and test sets into')
     parser.add_argument('-c', '--columns', nargs='+', help='List of all columns names of the dataset')
     parser.add_argument('-f', '-x', '--features', nargs='+', help='Name of dataset columns to be handled as features')
@@ -33,6 +33,15 @@ if __name__ == '__main__':
             dataset.fillna(dict(zip(args.substitute, args.subvalues)), inplace=True)
         if args.normalize:
             dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
+            print()
+        shortest = min(len(dataset[dataset[args.label[0]] == 0]), len(dataset[dataset[args.label[0]] == 1]))
+
+        if len(dataset[dataset[args.label[0]] == 1]) == shortest:
+            keep = dataset.loc[dataset[dataset[args.label[0]] == 0].sample(shortest).index, :]
+            dataset = pd.concat([dataset[dataset[args.label[0]] == 1], keep], axis=0, copy=False)
+        else:
+            keep = dataset.loc[dataset[dataset[args.label[0]] == 1].sample(shortest).index, :]
+            dataset = pd.concat([dataset[dataset[args.label[0]] == 0], keep], axis=0, copy=False)
         x_train, x_test, y_train, y_test = train_test_split(dataset[args.features], dataset[args.label], test_size=0.2)
         pd.concat([x_train, y_train], axis=1, copy=False).to_csv(Path(args.output, 'train_set.csv'),
                                                                  index=False, encoding='utf-8')

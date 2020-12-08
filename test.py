@@ -5,28 +5,32 @@ import sklearn.metrics as metric
 import pandas as pd
 
 
-def compute_measures(df, measures, features, label):
+def compute_measures(path, df, measures, features, label):
+    with open(path, 'rb') as f:
+        mod = pickle.load(f)
+    predictions = mod.predict(df[features])
+    measures = [measures]
     if any(_ in ['F1', 'all'] for _ in measures):
         pass
-    elif any(_ in ['precision', 'all'] for _ in measures):
+    if any(_ in ['precision', 'all'] for _ in measures):
         pass
-    elif any(_ in ['recall', 'all'] for _ in measures):
+    if any(_ in ['recall', 'all'] for _ in measures):
         pass
-    elif any(_ in ['accuracy', 'all'] for _ in measures):
+    if any(_ in ['accuracy', 'all'] for _ in measures):
         pass
-    elif any(_ in ['confusion', 'matrix', 'confusionmatrix', 'all'] for _ in measures):
+    if any(_ in ['confusion', 'matrix', 'confusionmatrix', 'all'] for _ in measures):
         pass
-    elif any(_ in ['roc', 'all'] for _ in measures):
+    if any(_ in ['roc', 'all'] for _ in measures):
         pass
-    elif any(_ in ['report', 'all'] for _ in measures):
-        metric.classification_report(df[label])
-    elif any(_ in ['main', 'all'] for _ in measures):
+    if any(_ in ['report', 'all'] for _ in measures):
+        print(metric.classification_report(df[label].values.ravel(), predictions))
+    if any(_ in ['main', 'all'] for _ in measures):
         pass
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Test the provided model(s) with the testing set in input')
-    parser.add_argument('test-set', help='The path to the testing set csv file to conduct tests on')
+    parser.add_argument('test_set', help='The path to the testing set csv file to conduct tests on')
     parser.add_argument('models', nargs='+', help='Path(s) to the models to test;\n'
                                                   'if a folder is provided, all models in the folder will be tested')
     parser.add_argument('measures', nargs='*',
@@ -38,12 +42,12 @@ if __name__ == '__main__':
     parser.add_argument('-lb', '-y', '--label', nargs='+', help='Name of the dataset column to be handled as label')
     args = parser.parse_args()
     if Path(args.test_set).is_file() and Path(args.test_set).suffix == '.csv':
-        test_set = pd.read_csv(Path(args.train_set), header=0, names=args.columns, usecols=args.features + args.label,
+        test_set = pd.read_csv(Path(args.test_set), header=0, names=args.columns, usecols=args.features + args.label,
                                na_filter=False, encoding='utf-8')
         for m in args.models:
-            if Path.is_dir(m):
+            if Path(m).is_dir():
                 for model in Path(m).iterdir():
                     if model.is_file() and model.suffix in ['.model', '.pkl']:
-                        compute_measures(test_set, args.measures, args.features, args.label)
+                        compute_measures(model, test_set, args.measures, args.features, args.label)
             elif Path(m).suffix in ['.model', '.pkl']:
-                compute_measures(test_set, args.measures, args.features, args.label)
+                compute_measures(m, test_set, args.measures, args.features, args.label)
