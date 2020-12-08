@@ -80,7 +80,7 @@ def train_gaussian_naive_bayes(df, features, label, output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train some (or all) models on the training set provided')
     parser.add_argument("train_set", help="The path to the training set csv file")
-    parser.add_argument('-o', '--output', default='models', help='folder path to save trained model(s) into')
+    parser.add_argument('-o', '--output', default='../models', help='folder path to save trained model(s) into')
     parser.add_argument('models', nargs='*',
                         choices=['KNN', 'MLP', 'DT', 'RF', 'SVM', 'LR', 'GPC', 'NB', 'DTree', 'DecisionTree',
                                  'Neighbors', 'Forest', 'RandomForest', 'Logistic', 'LogisticRegression', 'Gaussian',

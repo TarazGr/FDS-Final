@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 import pickle
-from sklearn.metrics import *
+import sklearn.metrics as metric
 import pandas as pd
 
 
@@ -19,7 +19,7 @@ def compute_measures(df, measures, features, label):
     elif any(_ in ['roc', 'all'] for _ in measures):
         pass
     elif any(_ in ['report', 'all'] for _ in measures):
-        pass
+        metric.classification_report(df[label])
     elif any(_ in ['main', 'all'] for _ in measures):
         pass
 
