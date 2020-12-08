@@ -27,9 +27,12 @@ if __name__ == '__main__':
     if Path(args.dataset).is_file() and Path(args.dataset).suffix == '.csv':
         dataset = pd.read_csv(Path(args.dataset), header=0, names=args.columns,
                               usecols=args.features + args.label, encoding='utf-8')
-        dataset.dropna(subset=args.dropna, inplace=True)
-        dataset.fillna(dict(zip(args.substitute, args.subvalues)))
-        dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
+        if args.dropna:
+            dataset.dropna(subset=args.dropna, inplace=True)
+        if args.substitute and args.subvalues:
+            dataset.fillna(dict(zip(args.substitute, args.subvalues)))
+        if args.normalize:
+            dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
         x_train, x_test, y_train, y_test = train_test_split(dataset[args.features], dataset[args.label], test_size=0.2)
         pd.concat([x_train, y_train], axis=1, copy=False).to_csv(Path(args.output, 'train_set.csv'),
                                                                  index=False, encoding='utf-8')
