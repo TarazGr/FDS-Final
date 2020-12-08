@@ -30,7 +30,7 @@ if __name__ == '__main__':
         if args.dropna:
             dataset.dropna(subset=args.dropna, inplace=True)
         if args.substitute and args.subvalues:
-            dataset.fillna(dict(zip(args.substitute, args.subvalues)))
+            dataset.fillna(dict(zip(args.substitute, args.subvalues)), inplace=True)
         if args.normalize:
             dataset[args.normalize] = MinMaxScaler(copy=False).fit_transform(dataset[args.normalize])
         x_train, x_test, y_train, y_test = train_test_split(dataset[args.features], dataset[args.label], test_size=0.2)

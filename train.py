@@ -14,16 +14,16 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 def train_knn(df, neighbors, features, label, output):
-    neigh = KNeighborsClassifier(n_neighbors=neighbors)
-    neigh = neigh.fit(df[features], df[label])
+    model = KNeighborsClassifier(n_neighbors=neighbors)
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_KNN.pkl")
     with open(path, 'wb') as f:
-        pickle.dump(neigh, f)
+        pickle.dump(model, f)
 
 
 def train_neural_network(df, learning_rate, layers, iterations, tol, features, label, output):
-    model = MLPClassifier(hidden_layer_sizes=layers, learning_rate=learning_rate, max_iter=iterations, tol=tol)
-    model = model.fit(df[features], df[label])
+    model = MLPClassifier(hidden_layer_sizes=layers, learning_rate_init=learning_rate, max_iter=iterations, tol=tol)
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_neural_networks.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -31,7 +31,7 @@ def train_neural_network(df, learning_rate, layers, iterations, tol, features, l
 
 def train_decision_tree(df, features, label, output):
     model = DecisionTreeClassifier()
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_decision_tree.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -39,7 +39,7 @@ def train_decision_tree(df, features, label, output):
 
 def train_random_forest(df, n_trees, depth, features, label, output):
     model = RandomForestClassifier(n_estimators=n_trees, max_depth=depth)
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_random_forest.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -47,7 +47,7 @@ def train_random_forest(df, n_trees, depth, features, label, output):
 
 def train_svm(df, features, label, output):
     model = SVC(kernel="linear")
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_svm.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -55,7 +55,7 @@ def train_svm(df, features, label, output):
 
 def train_logistic_regression(df, iterations, tol, features, label, output):
     model = LogisticRegression(solver='liblinear', max_iter=iterations, tol=tol)
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_logistic_regression.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -63,7 +63,7 @@ def train_logistic_regression(df, iterations, tol, features, label, output):
 
 def train_gaussian_classifier(df, iterations, features, label, output):
     model = GaussianProcessClassifier(max_iter_predict=iterations)
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_gaussian_classifier.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -71,7 +71,7 @@ def train_gaussian_classifier(df, iterations, features, label, output):
 
 def train_gaussian_naive_bayes(df, features, label, output):
     model = GaussianNB()
-    model = model.fit(df[features], df[label])
+    model = model.fit(df[features], df[label].values.ravel())
     path = Path(output, "model_gaussian_naive.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -104,23 +104,24 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--depth', nargs='?', type=int, default=None,
                         help='Maximum depth for each tree in the RandomForest')
     args = parser.parse_args()
-    if Path(args.train_set).is_file() and Path(args.test_set).suffix == '.csv':
+    if Path(args.train_set).is_file() and Path(args.train_set).suffix == '.csv':
         train_set = pd.read_csv(Path(args.train_set), header=0, names=args.columns, usecols=args.features + args.label,
                                 na_filter=False, encoding='utf-8')
         if any(_ in ['KNN', 'Neighbors', 'all'] for _ in args.models):
-            train_knn(train_set, args.neighbors, args.fatures, args.label, args.output)
-        elif any(_ in ['MLP', 'NeuralNetwork', 'all'] for _ in args.models):
+            train_knn(train_set, args.neighbors, args.features, args.label, args.output)
+        if any(_ in ['MLP', 'NeuralNetwork', 'all'] for _ in args.models):
             train_neural_network(train_set, args.learning_rate, args.layers, args.iterations, args.tolerance,
-                                 args.fatures, args.label, args.output)
-        elif any(_ in ['DT', 'DTree', 'DecisionTree', 'all'] for _ in args.models):
-            train_decision_tree(train_set, args.fatures, args.label, args.output)
-        elif any(_ in ['RF', 'RandomForest', 'Forest', 'all'] for _ in args.models):
-            train_random_forest(train_set, args.trees, args.depth, args.fatures, args.label, args.output)
-        elif any(_ in ['SVM', 'all'] for _ in args.models):
-            train_svm(train_set, args.fatures, args.label, args.output)
-        elif any(_ in ['LR', 'Logistic', 'LogisticRegression', 'all'] for _ in args.models):
-            train_logistic_regression(train_set, args.iterations, args.tolerance, args.fatures, args.label, args.output)
-        elif any(_ in ['GPC', 'Gaussian', 'all'] for _ in args.models):
-            train_gaussian_classifier(train_set, args.iterations, args.fatures, args.label, args.output)
-        elif any(_ in ['NB', 'Bayes', 'NaiveBayes', 'all'] for _ in args.models):
-            train_gaussian_naive_bayes(train_set, args.fatures, args.label, args.output)
+                                 args.features, args.label, args.output)
+        if any(_ in ['DT', 'DTree', 'DecisionTree', 'all'] for _ in args.models):
+            train_decision_tree(train_set, args.features, args.label, args.output)
+        if any(_ in ['RF', 'RandomForest', 'Forest', 'all'] for _ in args.models):
+            train_random_forest(train_set, args.trees, args.depth, args.features, args.label, args.output)
+        if any(_ in ['SVM', 'all'] for _ in args.models):
+            train_svm(train_set, args.features, args.label, args.output)
+        if any(_ in ['LR', 'Logistic', 'LogisticRegression', 'all'] for _ in args.models):
+            train_logistic_regression(train_set, args.iterations, args.tolerance, args.features, args.label,
+                                      args.output)
+        if any(_ in ['GPC', 'Gaussian', 'all'] for _ in args.models):
+            train_gaussian_classifier(train_set, args.iterations, args.features, args.label, args.output)
+        if any(_ in ['NB', 'Bayes', 'NaiveBayes', 'all'] for _ in args.models):
+            train_gaussian_naive_bayes(train_set, args.features, args.label, args.output)
