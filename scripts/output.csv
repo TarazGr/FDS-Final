@@ -1,0 +1,56 @@
+                 0                     1
+0         F1-Score              0.622642
+1  Precision-Score              0.666667
+2     Recall-Score              0.584071
+3   Accuracy-Score              0.650655
+4  ConfusionMatrix  [[83, 33], [47, 66]]
+5        ROC-Score              0.649794
+                 0                     1
+0         F1-Score              0.539535
+1  Precision-Score              0.568627
+2     Recall-Score              0.513274
+3   Accuracy-Score              0.567686
+4  ConfusionMatrix  [[72, 44], [55, 58]]
+5        ROC-Score              0.566982
+                 0                     1
+0         F1-Score              0.651163
+1  Precision-Score              0.686275
+2     Recall-Score              0.619469
+3   Accuracy-Score              0.672489
+4  ConfusionMatrix  [[84, 32], [43, 70]]
+5        ROC-Score              0.671803
+                 0                     1
+0         F1-Score              0.600985
+1  Precision-Score              0.677778
+2     Recall-Score              0.539823
+3   Accuracy-Score              0.646288
+4  ConfusionMatrix  [[87, 29], [52, 61]]
+5        ROC-Score              0.644912
+                 0                     1
+0         F1-Score              0.576419
+1  Precision-Score              0.568966
+2     Recall-Score              0.584071
+3   Accuracy-Score              0.576419
+4  ConfusionMatrix  [[66, 50], [47, 66]]
+5        ROC-Score              0.576518
+                 0                     1
+0         F1-Score              0.657407
+1  Precision-Score               0.68932
+2     Recall-Score              0.628319
+3   Accuracy-Score              0.676856
+4  ConfusionMatrix  [[84, 32], [42, 71]]
+5        ROC-Score              0.676228
+                 0                     1
+0         F1-Score              0.378378
+1  Precision-Score                   0.8
+2     Recall-Score              0.247788
+3   Accuracy-Score              0.598253
+4  ConfusionMatrix  [[109, 7], [85, 28]]
+5        ROC-Score              0.593721
+                 0                     1
+0         F1-Score              0.660377
+1  Precision-Score              0.707071
+2     Recall-Score              0.619469
+3   Accuracy-Score               0.68559
+4  ConfusionMatrix  [[87, 29], [43, 70]]
+5        ROC-Score              0.684735
