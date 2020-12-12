@@ -48,16 +48,16 @@ if __name__ == '__main__':
     if Path(args.test_set).is_file() and Path(args.test_set).suffix == '.csv':
         test_set = pd.read_csv(Path(args.test_set), header=0, names=args.columns, usecols=args.features + args.label,
                                na_filter=False, encoding='utf-8')
-        df = pd.DataFrame(columns=['model'] + args.measures)
+        res = pd.DataFrame(columns=['model'] + args.measures)
         for m in args.models:
             if Path(m).is_dir():
                 for model in Path(m).iterdir():
                     if model.is_file() and model.suffix in ['.model', '.pkl']:
                         metrics = compute_measures(model, test_set, args.measures, args.features, args.label)
                         metrics.update({'model': model.name})
-                        df = df.append(metrics, ignore_index=True)
+                        res = res.append(metrics, ignore_index=True)
             elif Path(m).suffix in ['.model', '.pkl']:
                 metrics = compute_measures(m, test_set, args.measures, args.features, args.label)
                 metrics.update({'model': m.name})
-                df = df.append(metrics, ignore_index=True)
-        df.to_csv(Path(args.output, 'test_results.csv'), index=False, encoding='utf-8')
+                res = res.append(metrics, ignore_index=True)
+        res.to_csv(Path(args.output, 'test_results.csv'), index=False, encoding='utf-8')
