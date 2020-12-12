@@ -16,7 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 def train_knn(df, neighbors, features, label, output):
     model = KNeighborsClassifier(n_neighbors=neighbors)
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_KNN.pkl")
+    path = Path(output, "KNN.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -24,7 +24,7 @@ def train_knn(df, neighbors, features, label, output):
 def train_neural_network(df, learning_rate, layers, iterations, tol, features, label, output):
     model = MLPClassifier(hidden_layer_sizes=layers, learning_rate_init=learning_rate, max_iter=iterations, tol=tol)
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_neural_networks.pkl")
+    path = Path(output, "neural_networks.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -32,7 +32,7 @@ def train_neural_network(df, learning_rate, layers, iterations, tol, features, l
 def train_decision_tree(df, features, label, output):
     model = DecisionTreeClassifier()
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_decision_tree.pkl")
+    path = Path(output, "decision_tree.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -40,7 +40,7 @@ def train_decision_tree(df, features, label, output):
 def train_random_forest(df, n_trees, depth, features, label, output):
     model = RandomForestClassifier(n_estimators=n_trees, max_depth=depth)
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_random_forest.pkl")
+    path = Path(output, "random_forest.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -48,7 +48,7 @@ def train_random_forest(df, n_trees, depth, features, label, output):
 def train_svm(df, features, label, output):
     model = SVC(kernel="linear")
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_svm.pkl")
+    path = Path(output, "svm.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -56,7 +56,7 @@ def train_svm(df, features, label, output):
 def train_logistic_regression(df, iterations, tol, features, label, output):
     model = LogisticRegression(solver='liblinear', max_iter=iterations, tol=tol)
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_logistic_regression.pkl")
+    path = Path(output, "logistic_regression.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -64,7 +64,7 @@ def train_logistic_regression(df, iterations, tol, features, label, output):
 def train_gaussian_classifier(df, iterations, features, label, output):
     model = GaussianProcessClassifier(max_iter_predict=iterations)
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_gaussian_classifier.pkl")
+    path = Path(output, "gaussian_classifier.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
@@ -72,7 +72,7 @@ def train_gaussian_classifier(df, iterations, features, label, output):
 def train_gaussian_naive_bayes(df, features, label, output):
     model = GaussianNB()
     model.fit(df[features], df[label].values.ravel())
-    path = Path(output, "model_gaussian_naive.pkl")
+    path = Path(output, "gaussian_naive.pkl")
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
