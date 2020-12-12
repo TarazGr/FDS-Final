@@ -54,10 +54,10 @@ if __name__ == '__main__':
                 for model in Path(m).iterdir():
                     if model.is_file() and model.suffix in ['.model', '.pkl']:
                         metrics = compute_measures(model, test_set, args.measures, args.features, args.label)
-                        metrics.update({'model': model.name})
+                        metrics.update({'model': model.name.rstrip(model.suffix)})
                         res = res.append(metrics, ignore_index=True)
             elif Path(m).suffix in ['.model', '.pkl']:
                 metrics = compute_measures(m, test_set, args.measures, args.features, args.label)
-                metrics.update({'model': m.name})
+                metrics.update({'model': m.name.rstrip(m.suffix)})
                 res = res.append(metrics, ignore_index=True)
         res.to_csv(Path(args.output, 'test_results.csv'), index=False, encoding='utf-8')
