@@ -29,8 +29,8 @@ def train_neural_network(df, learning_rate, layers, iterations, tol, features, l
         pickle.dump(model, f)
 
 
-def train_decision_tree(df, features, label, output):
-    model = DecisionTreeClassifier()
+def train_decision_tree(df, depth, features, label, output):
+    model = DecisionTreeClassifier(max_depth=depth)
     model.fit(df[features], df[label].values.ravel())
     path = Path(output, "decision_tree.pkl")
     with open(path, 'wb') as f:
@@ -46,7 +46,7 @@ def train_random_forest(df, n_trees, depth, features, label, output):
 
 
 def train_svm(df, features, label, output):
-    model = SVC(kernel="linear")
+    model = SVC(kernel="linear", probability=True)
     model.fit(df[features], df[label].values.ravel())
     path = Path(output, "svm.pkl")
     with open(path, 'wb') as f:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--trees', nargs='?', type=int, default=100,
                         help='Number of trees in the RandomForest')
     parser.add_argument('-d', '--depth', nargs='?', type=int, default=None,
-                        help='Maximum depth for each tree in the RandomForest')
+                        help='Maximum depth for each tree in the RandomForest and/or DecisionTree')
     args = parser.parse_args()
     if Path(args.train_set).is_file() and Path(args.train_set).suffix == '.csv':
         train_set = pd.read_csv(Path(args.train_set), header=0, names=args.columns, usecols=args.features + args.label,
@@ -113,7 +113,7 @@ if __name__ == '__main__':
             train_neural_network(train_set, args.learning_rate, args.layers, args.iterations, args.tolerance,
                                  args.features, args.label, args.output)
         if any(_ in ['DT', 'DTree', 'DecisionTree', 'all'] for _ in args.models):
-            train_decision_tree(train_set, args.features, args.label, args.output)
+            train_decision_tree(train_set, args.depth, args.features, args.label, args.output)
         if any(_ in ['RF', 'RandomForest', 'Forest', 'all'] for _ in args.models):
             train_random_forest(train_set, args.trees, args.depth, args.features, args.label, args.output)
         if any(_ in ['SVM', 'all'] for _ in args.models):
