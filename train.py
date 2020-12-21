@@ -89,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', '--columns', nargs='+', help='List of all columns names of the dataset')
     parser.add_argument('-f', '-x', '--features', nargs='+', help='Name of dataset columns to be handled as features')
     parser.add_argument('-lb', '-y', '--label', nargs='+', help='Name of the dataset column to be handled as label')
-    parser.add_argument('-n', '--neighbors', nargs='*', type=int, default=5,
+    parser.add_argument('-n', '--neighbors', nargs='?', type=int, default=5,
                         help='Number of neighbors for KNN')
     parser.add_argument('-lr', '--learning_rate', nargs='?', type=float, default=0.001,
                         help='Learning rate for Multilayer Perceptron')
